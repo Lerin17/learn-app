@@ -9,6 +9,8 @@ import {Gradient} from '../components/gradient'
 // import  from '../images/teacher.png'
 
 import { CalendarCom } from '../components/Home/CalenderCom'
+import CalenderInt from '../components/Home/CalenderNextday'
+import CalendarDateTerminal from '../components/Home/CalendarTerminal'
 
 
 const Home: NextPage = (props:any) => {
@@ -20,61 +22,55 @@ const Home: NextPage = (props:any) => {
   // console.log(props.content)
 
   return (
-    <div  className='text-white px-4 lg:px-48  h-full' >
-      <div className='flex flex-col h-full' >
+    <div  className='text-white px-4 xl:px-48 lg:px-32  h-full' >
+      <div className=' h-full' >
 
-        <div className='flex flex-col h-1/2' >
-          <div className='lg:hidden md:hidden block' >
+        <div className='flex  h-full' >
+          {/* <div className='lg:hidden md:hidden block' >
               ddd
-          </div>
+          </div> */}
 
-          <div className=' w-full  rounded flex  justify-between  lg:p-2 md:p-2 justify-center' >
-            <div className='lg:mr-10 md:mr-10 w-full flex flex-start ' >  
-              <CalendarCom/>
-
-              <div className='hidden lg:block w-1/2 border ml-6' >
-                Details about date
-              </div>
-            </div>
-           
-
-            <div className='hidden md:block lg:block border-r border-b rounded w-2/4 lg:w-3/4 flex flex-col lg:flex lg:flex-row' >
-                  <div style={{
+          <div className='hidden md:block lg:block border-r-2 border-b-2 rounded border-lime-400 lg:mr-10 md:mr-10 w-3/4 ' >
+            <div className='flex  ' >
+               <div style={{
                     wordBreak: 'break-all'
-                  }} className='w-28  text-gray-300 flex flex-start font-header1 lg:text-7xl md:text-5xl' >
+                  }} className='w-28  text-gray-300 flex flex-start font-header2 text-center  h-fit  text-5xl' >
                       Sunday
                   </div>
 
-                  <div className='w-full lg:mx-1' >
-                    <div className='flex flex-col items-center justify-center' >
-                      <div className='my-2 shadow ' >
-                          Roots
-                        </div>
+                  <div className=' h-fit font-header3 text-gray-300 md:text-4xl  border-l-none flex  md:flex md:flex-col md:mt-2' >
+                   
+                    <div className=' font-extrabold capitalize' >June</div>
+                    <div className=' w-fit ' >12</div>
+                  </div>
 
-                        <div className='my-2 shadow text-transparent hidden lg:block' >
-                          Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus corrupti autem ut 
-                        </div>
+            </div>
+                
 
-                        <div className='my-2 shadow text-transparent' >
-                          Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus corrupti autem ut nisi earum quae alias voluptatem enim. Repellat 
-                        </div>
-                    </div>
-                    
-                   </div>
+              
             {/* <canvas id="gradient-canvas" data-transition-in /> */}
             </div>
+
+        {/*second side of the flex containing calender and create new*/}
+          <div className=' w-full  flex flex-col rounded   justify-between   lg:p-2 md:p-2 justify-center ' >
+
+            <div className=' w-full flex lg:justify-start md:justify-center justify-center' >  
+                <div className='hidden lg:block w-1/2 border-2 rounded-l border-lime-500 border-r-0 ' >
+                  <CalenderInt/>
+                </div>
+              <CalendarCom/>
+            </div>
+           
+             <div style={{
+              // width: '350px'
+             }} className='h-1/2 rounded  border-l-2 border-b-2 border-lime-400 ' >
+                <CalendarDateTerminal/>
+           </div>
+
+            
           </div>
         </div>
 
-        <div className='flex lg:h-1/2 md:h-1/2 my-2' >
-          <div className=' w-full rounded shadow mr-2' >
-            Notifications
-          </div>
-
-          <div className=' w-full rounded shadow' >
-            Notifications
-          </div>
-        </div>
        
       </div>
     </div>

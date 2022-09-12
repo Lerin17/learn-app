@@ -14,9 +14,9 @@ export const Nav = () => {
   const NavOption = (props:INavOptions) => {
 
     return (
-      <div className={`px-2 py-1  lg:px-4 md:px-4 lg:text-base md:text-base text-sm  hover:text-black transition-all text-gray-700 font-header1 font-normal`} >
+      <div className={`px-2 py-1  lg:px-4 md:px-4 lg:text-base md:text-base text-sm  hover:text-black transition-all text-white font-header1 font-normal`} >
         <Link  href= {props.locationURL} >
-            <div className={`cursor-pointer ${props.one?'text-4xl font-bold uppercase':''}`} >
+            <div className={`cursor-pointer ${props.one?'text-5xl font-bold font-header2 uppercase':''}`} >
               {props.text}
             </div>
         </Link>
@@ -56,7 +56,7 @@ export const Nav = () => {
         
         <NavOption
         text = 'Live Classes'
-        locationURL= '/'
+        locationURL= '/liveclasses'
         />
 
      

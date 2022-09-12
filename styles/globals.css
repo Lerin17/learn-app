@@ -3,6 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 /* .container{
 
   background-color: #141414;
@@ -83,7 +84,7 @@ radial-gradient(at 51% 71%, rgb(25, 25, 23) 0, hsla(75, 86%, 70%, 0) 50%);
   font-weight: bold;
 }
 .react-calendar__month-view__days__day--weekend {
-  color: #d10000;
+  color: #d18100;
 }
 .react-calendar__month-view__days__day--neighboringMonth {
   color: #757575;
@@ -146,6 +147,63 @@ radial-gradient(at 51% 71%, rgb(25, 25, 23) 0, hsla(75, 86%, 70%, 0) 50%);
 
 @import url('https://fonts.googleapis.com/css2?family=Didact+Gothic&family=DotGothic16&family=Geostar&family=Geostar+Fill&family=Goldman:wght@400;700&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,600;0,700;1,100;1,200;1,400;1,500&family=Keania+One&family=Monofett&display=swap');
 
+@font-face {
+  font-family: "UPHEAVAl";
+  src: url('../public/fonts/upheaval/upheavtt.ttf');
+}
+
+@font-face {
+  font-family: 'DOGICA';
+  src: url('../public/fonts/dogica/dogica.ttf');
+}
+
+@font-face {
+  font-family: 'KIRBYS';
+  src: url('../public/fonts/kirbys/Kirbys.ttf');
+} 
+
+@font-face {
+  font-family: 'ALDO';
+  src: url('../public/fonts/aldo/Aldo\ PC.ttf');
+}
+@font-face {
+  font-family: 'AQUA';
+  src: url('../public/fonts/aquarilla/Aquarilla.ttf');
+}
+
+@font-face {
+  font-family: 'JAP';
+  src: url('../public/fonts/javanese/Javanese\ Neu.ttf');
+}
+
+@font-face {
+  font-family: 'CUA';
+  src: url('../public/fonts/cuatra/Cuatra-Light.ttf');
+}
+
+@font-face {
+  font-family: 'CAP';
+  src: url('../public/fonts/capicola_sansish/CapicolaSansish.ttf');
+}
+
+@font-face {
+  font-family: 'PLA';
+  src: url('../public/fonts/plagiata/Plagiata.otf');
+}
+
+@font-face {
+  font-family: 'NEM';
+  src: url('../public/fonts/nemesia/Nemesia-regular.ttf');
+}
+
+.next{
+  background-image: url('../images/transparent-square-tiles.png');
+  /* background-color: #006edc; */
+}
+
+.eggshell{
+  background-image: url('../images/shattered-dark.png');
+}
 /* html,
 body {
   padding: 0;
@@ -158,6 +216,8 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+
 
 * {
   box-sizing: border-box;
