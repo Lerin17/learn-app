@@ -24,7 +24,9 @@ const socket = io('http://localhost:3022')
   const myVideo = React.useRef<any>()
   const userVideo = React.useRef<any>()
   const connectionRef = React.useRef<any>()
-  // let peerConnection:any
+  let peerConnection:any
+
+  const [peer, setpeer] = React.useState<any>();
 
   React.useEffect(() => {
     const callx = () => {
@@ -61,9 +63,21 @@ const socket = io('http://localhost:3022')
 
 
 
-    socket.on('calluser', ({from, name: callerName,  signal}) => {
+    socket.on('callUser', ({from, name: callerName,  signal}) => {
       console.log('cow')
       setCall({isReceivedCall: true, from, name: callerName, signal})
+    })
+
+    socket.on('callAccepted', async (answer)=>{
+      console.log(answer, 'answer')
+      console.log('Gex')
+
+      console.log(peerConnection)
+      console.log(peer, 'peerx')
+
+      peer.setRemoteDescription(new RTCSessionDescription(answer.sdp))
+
+      setcallAccepted(true)
     })
   }, []);
 
@@ -79,13 +93,22 @@ const socket = io('http://localhost:3022')
  }
 
  
- console.log(Call)
- console.log(Me)
+
+ 
+//  console.log(Call)
+//  console.log(Me)
+//  console.log(callAccepted, 'callAccepted')
+
+console.log(peer, 'peer')
 
 
   const  callUser = async (id:any) => {
     const configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]}
-    const peerConnection = new RTCPeerConnection(configuration);
+
+    peerConnection = new RTCPeerConnection(configuration);
+    console.log(peerConnection, 'daxdd')
+
+    setpeer(peerConnection)
 
    const offer = await peerConnection.createOffer()
     await peerConnection.setLocalDescription(offer);
@@ -94,13 +117,12 @@ const socket = io('http://localhost:3022')
         userToCall: id, signalData: offer, from: Me, name
       })
 
-      
 
       stream.getTracks().forEach((track:any) => peerConnection.addTrack(track, stream));
 
       // peerConnection.addTrack(stream)
 
-      peerConnection.ontrack = e => {
+      peerConnection.ontrack = (e:any) => {
         userVideo.current.srcObject = e.streams[0]
       }
 
@@ -120,23 +142,29 @@ const socket = io('http://localhost:3022')
     //   })
     }
 
+    console.log('reload')
+
     const answerCall = async () => {
       const configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]}
-      const peerConnection = new RTCPeerConnection(configuration);
+      
+      peerConnection = new RTCPeerConnection(configuration);
 
+      // setpeer(new RTCPeerConnection(configuration))
+
+      // console.log(peerConnection, 'dax')
        
         
-      peerConnection.setRemoteDescription(new RTCSessionDescription(Call.signal))
+       peerConnection.setRemoteDescription(new RTCSessionDescription(Call.signal))
 
       const answer = await peerConnection.createAnswer();
-      socket.emit('answercall', {answer})
+      socket.emit('answerCall', {to:Call.from ,answer})
    
 
       stream.getTracks().forEach((track:any) => peerConnection.addTrack(track, stream));
 
       // peerConnection.addTrack(stream)
 
-      peerConnection.ontrack = e => {
+      peerConnection.ontrack = (e:any) => {
         userVideo.current.srcObject = e.streams[0]
       }
 
