@@ -12,6 +12,6 @@ export interface Isocketcontext {
     callEnded:any
     Me:any
     Call: any
-    name: any
+    name: any | undefined
 
 }
