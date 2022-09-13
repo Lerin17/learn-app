@@ -3,7 +3,7 @@
 export interface Isocketcontext {
     answerCall: () => void
     callUser: (id:any) => void
-    leaveCall: () => void
+    leaveCall?: () => void | undefined
     myVideo: any,
     callAccepted:any,
     userVideo:any

@@ -48,14 +48,39 @@ const socket = io('http://localhost:3022')
   
     socket.on('me', (id) => setMe(id))
 
+    console.log(Me)
+
+    // socket.on('calluser', async (data) => {
+        
+    //   peerConnection.setRemoteDescription(new RTCSessionDescription(data.signal))
+
+    //   const answer = await peerConnection.createAnswer();
+    //   socket.emit('answercall', {answer})
+    //   })
+
+
 
 
     socket.on('calluser', ({from, name: callerName,  signal}) => {
+      console.log('cow')
       setCall({isReceivedCall: true, from, name: callerName, signal})
     })
   }, []);
 
+  React.useEffect(() => {
+
+    if(stream){
+      console.log(stream.getTracks())
+    }
+  }, [stream]);
+
+ const leaveCall = () => {
+  console.log('leave call')
+ }
+
  
+ console.log(Call)
+ console.log(Me)
 
 
   const  callUser = async (id:any) => {
@@ -69,6 +94,15 @@ const socket = io('http://localhost:3022')
         userToCall: id, signalData: offer, from: Me, name
       })
 
+      
+
+      stream.getTracks().forEach((track:any) => peerConnection.addTrack(track, stream));
+
+      // peerConnection.addTrack(stream)
+
+      peerConnection.ontrack = e => {
+        userVideo.current.srcObject = e.streams[0]
+      }
 
 
   //   peerConnection.createOffer((sessionDescription:any) => {
@@ -86,21 +120,21 @@ const socket = io('http://localhost:3022')
     //   })
     }
 
-    const answerCall = () => {
+    const answerCall = async () => {
       const configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]}
       const peerConnection = new RTCPeerConnection(configuration);
 
-      socket.on('calluser', async (data) => {
+       
         
-      peerConnection.setRemoteDescription(new RTCSessionDescription(data.signal))
+      peerConnection.setRemoteDescription(new RTCSessionDescription(Call.signal))
 
       const answer = await peerConnection.createAnswer();
       socket.emit('answercall', {answer})
-      })
+   
 
-      
-      stream.getTrack().forEach((track:any) => peerConnection.addTrack(track, stream));
+      stream.getTracks().forEach((track:any) => peerConnection.addTrack(track, stream));
 
+      // peerConnection.addTrack(stream)
 
       peerConnection.ontrack = e => {
         userVideo.current.srcObject = e.streams[0]
@@ -142,7 +176,7 @@ const socket = io('http://localhost:3022')
     // await peerConnection.setLocalDescription(offer);
     // signalingChannel.send({'offer': offer});
 
-  }
+  // }
 
   // const answerCall = () => {
   //   setcallAccepted(true)

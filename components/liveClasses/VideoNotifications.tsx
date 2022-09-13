@@ -5,7 +5,7 @@ import { Isocketcontext } from '../../types/context/socketcontext'
 
 const VideoNotifications = () => {
 const {answerCall, Call, callAccepted} = React.useContext(SocketContext) as Isocketcontext
-    console.log(Call)
+    // console.log(Call)
     console.log(callAccepted)
 
   return (

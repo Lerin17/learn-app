@@ -11,6 +11,8 @@ const VideoOptions = () => {
 
   const [idToCall, setidToCall] = React.useState('');
 
+  console.log(idToCall, 'idtocall')
+
   return (
     <div className='bg-white w-1/2'>Options
 
