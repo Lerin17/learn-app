@@ -24,6 +24,7 @@ const socket = io('http://localhost:3022')
   const myVideo = React.useRef<any>()
   const userVideo = React.useRef<any>()
   const connectionRef = React.useRef<any>()
+  // let peerConnection:any
 
   React.useEffect(() => {
     const callx = () => {
@@ -47,75 +48,166 @@ const socket = io('http://localhost:3022')
   
     socket.on('me', (id) => setMe(id))
 
+
+
     socket.on('calluser', ({from, name: callerName,  signal}) => {
       setCall({isReceivedCall: true, from, name: callerName, signal})
     })
   }, []);
 
-  const answerCall = () => {
-    setcallAccepted(true)
+ 
 
-    const peer = new Peer({initiator: false, trickle: false, stream})
 
-  // console.log( RTCStatsReport) 
+  const  callUser = async (id:any) => {
+    const configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]}
+    const peerConnection = new RTCPeerConnection(configuration);
 
-  // peer.getStats()
-    // console.log(peer.streams, 'ee')
-    // console.log(new RTCPeerConnection())
+   const offer = await peerConnection.createOffer()
+    await peerConnection.setLocalDescription(offer);
+
+      socket.emit('callUser', {
+        userToCall: id, signalData: offer, from: Me, name
+      })
+
+
+
+  //   peerConnection.createOffer((sessionDescription:any) => {
+  //     peerConnection.setLocalDescription(sessionDescription);
+  //     // sendCall({
+  //     //     name: userName,
+  //     //     rtcMessage: sessionDescription
+  //     // })
+  // }, (error) => {
+  //     console.log("Error");
+  // });
+    // if(peerConnection){
+    //   socket.emit('callUser', {
+    //     userToCall: id, signalData: data, from: Me, name
+    //   })
+    }
+
+    const answerCall = () => {
+      const configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]}
+      const peerConnection = new RTCPeerConnection(configuration);
+
+      socket.on('calluser', async (data) => {
+        
+      peerConnection.setRemoteDescription(new RTCSessionDescription(data.signal))
+
+      const answer = await peerConnection.createAnswer();
+      socket.emit('answercall', {answer})
+      })
+
+      
+      stream.getTrack().forEach((track:any) => peerConnection.addTrack(track, stream));
+
+
+      peerConnection.ontrack = e => {
+        userVideo.current.srcObject = e.streams[0]
+      }
+
+      // peerConnection.ontrack = (e) => {
+          
+      // }
+      
+
+      // peerConnection.addEventListener('connectionstatechange', () => {
+        
+      // })
+    }
+
+  //   function processCall(userName) {
+  //     peerConnection.createOffer((sessionDescription:any) => {
+  //         peerConnection.setLocalDescription(sessionDescription);
+  //         sendCall({
+  //             name: userName,
+  //             rtcMessage: sessionDescription
+  //         })
+  //     }, (error) => {
+  //         console.log("Error");
+  //     });
+  // }
+    
+
+    // peerConnection.addStream(localStream);
+
+
+    // signalingChannel.addEventListener('message', async message => {
+    //     if (message.answer) {
+    //         const remoteDesc = new RTCSessionDescription(message.answer);
+    //         await peerConnection.setRemoteDescription(remoteDesc);
+    //     }
+    // });
+    // const offer = await peerConnection.createOffer();
+    // await peerConnection.setLocalDescription(offer);
+    // signalingChannel.send({'offer': offer});
+
+  }
+
+  // const answerCall = () => {
+  //   setcallAccepted(true)
+
+  //   const peer = new Peer({initiator: false, trickle: false, stream})
+
+  // // console.log( RTCStatsReport) 
+
+  // // peer.getStats()
+  //   // console.log(peer.streams, 'ee')
+  //   // console.log(new RTCPeerConnection())
   
 
 
-    peer.on('signal', (data) => {
-      socket.emit('answercall', {signal: data, to: Call.from})
-    })
+  //   peer.on('signal', (data) => {
+  //     socket.emit('answercall', {signal: data, to: Call.from})
+  //   })
 
-    peer.on('stream', (currentStream) => {
-      userVideo.current.srcObject = currentStream
-    })
-
-    
-
-    // peer._debug()
-    // RTCPeerConnection
-
-    console.log()
-    peer.signal(Call.signal)
-
-    connectionRef.current = peer
-    
-
-  }
-
-  const callUser = (id:any) => {
-    const peer = new Peer({initiator: true, trickle: false, stream})
+  //   peer.on('stream', (currentStream) => {
+  //     userVideo.current.srcObject = currentStream
+  //   })
 
     
-  //  const statsInterval = setInterval(peer.debug , 1000)
 
-    peer.on('signal', (data) => {
-      socket.emit('calluser', {userToCall: id, signalData: data, from: Me, name})
-    })
+  //   // peer._debug()
+  //   // RTCPeerConnection
 
-    peer.on('stream', (currentStream) => {
-      userVideo.current.srcObject = currentStream
-    }) 
+  //   console.log()
+  //   peer.signal(Call.signal)
 
-    socket.on('callaccepted', (signal) => {
-      setcallAccepted(true)
+  //   connectionRef.current = peer
+    
 
-      peer.signal(signal)
-    })
+  // }
 
-    connectionRef.current = peer;
-  }
+  // const callUser = (id:any) => {
+  //   const peer = new Peer({initiator: true, trickle: false, stream})
 
-  const leaveCall = () => {
-    setcallEnded(true)
+    
+  // //  const statsInterval = setInterval(peer.debug , 1000)
 
-    connectionRef.current.destroy()
+  //   peer.on('signal', (data) => {
+  //     socket.emit('calluser', {userToCall: id, signalData: data, from: Me, name})
+  //   })
 
-    window.location.reload( )
-  }
+  //   peer.on('stream', (currentStream) => {
+  //     userVideo.current.srcObject = currentStream
+  //   }) 
+
+  //   socket.on('callaccepted', (signal) => {
+  //     setcallAccepted(true)
+
+  //     peer.signal(signal)
+  //   })
+
+  //   connectionRef.current = peer;
+  // }
+
+  // const leaveCall = () => {
+  //   setcallEnded(true)
+
+  //   connectionRef.current.destroy()
+
+  //   window.location.reload( )
+  // }
 
   return (
     <SocketContext.Provider value={{leaveCall, answerCall, callUser, myVideo, name,callAccepted, userVideo, stream, setname, callEnded, Me, Call}} >
